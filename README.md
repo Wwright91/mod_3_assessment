@@ -9,7 +9,7 @@ This project is a monorepo, meaning that the frontend and backend are in the sam
 ## Backend
 
 Copy the following into a .env file that you create in your /backend folder
-`PORT=3001
+`PORT=3000
 PG_HOST=localhost
 PG_USER='postgres'
 PG_PORT=5432
@@ -20,7 +20,7 @@ PG_DATABASE='animes_dev'`
    1. `npm i`
    2. `npm run setup`
    3. `npm run start`
-3. you should be able to open Postman see 'In Pursuit of Accelerator 2' when you make a GET request to [http://localhost:3001](http://localhost:3001)
+3. you should be able to open Postman see 'In Pursuit of Accelerator 2' when you make a GET request to [http://localhost:3000](http://localhost:3000)
 
 ### Backend assessment instructions
 
