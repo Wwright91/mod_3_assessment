@@ -64,6 +64,20 @@ animes.post("/", checkNameExists, checkDescriptionExists, async (req, res) => {
 //   "description": "this is anime as well"
 // }
 
+animes.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params
+    const updatedAnime = await updateOneAnime(id, req.body)
+    if (updatedAnime.id) {
+      res.status(200).json({})
+    } else {
+      res.status(404).json(`Can not find anime with id: ${id}`)
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Server Error" });
+  }
+})
+
 //Write a DELETE route that deletes a single anime by id (provided by the client as a request param) from the database and responds with a 200 and the deleted anime data. The route should be able to handle a non-existent anime id.
 //your response body should look this:
 // {
