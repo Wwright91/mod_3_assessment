@@ -8,7 +8,10 @@ const {
   deleteOneAnime,
 } = require("../queries/animes");
 
-const {checkNameExists, checkDescriptionExists} = require("../validations/checkAnime")
+const {
+  checkNameExists,
+  checkDescriptionExists,
+} = require("../validations/checkAnime");
 
 /* Instructions: Use the following prompts to write the corresponding routes. **Each** route should be able to catch server-side and user input errors(should they apply). Consult the test files to see how the routes and errors should work.*/
 //Write a GET route that retrieves all animes from the database and sends them to the client with a 200 status code
@@ -64,19 +67,24 @@ animes.post("/", checkNameExists, checkDescriptionExists, async (req, res) => {
 //   "description": "this is anime as well"
 // }
 
-animes.put("/:id", async (req, res) => {
-  try {
-    const { id } = req.params
-    const updatedAnime = await updateOneAnime(id, req.body)
-    if (updatedAnime.id) {
-      res.status(200).json({})
-    } else {
-      res.status(404).json(`Can not find anime with id: ${id}`)
+animes.put(
+  "/:id",
+  checkNameExists,
+  checkDescriptionExists,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updatedAnime = await updateOneAnime(id, req.body);
+      if (updatedAnime) {
+        res.status(200).json({ updatedAnime });
+      } else {
+        res.status(404).json(`Can not find anime with id: ${id}`);
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Server Error" });
     }
-  } catch (error) {
-    res.status(500).json({ error: "Server Error" });
   }
-})
+);
 
 //Write a DELETE route that deletes a single anime by id (provided by the client as a request param) from the database and responds with a 200 and the deleted anime data. The route should be able to handle a non-existent anime id.
 //your response body should look this:
@@ -85,4 +93,18 @@ animes.put("/:id", async (req, res) => {
 //   "name": "test1",
 //   "description": "this is anime as well"
 // }
+
+animes.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedAnime = await deleteOneAnime(id);
+    if (deletedAnime) {
+      res.status(200).json({ deletedAnime });
+    } else {
+      res.status(404).json(`Can not find anime with id: ${id}`);
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Server Error" });
+  }
+});
 module.exports = animes;
